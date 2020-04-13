@@ -3,7 +3,7 @@ import express from 'express';
 const app = express();
 
 app.get('/', (request, response) => {
-  return response.json({ message: 'Hello from the GoStack!' });
+  return response.json({ message: 'Hello from the from node!' });
 });
 
 app.listen(3333, () => {
