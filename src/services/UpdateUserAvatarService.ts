@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
+import AppError from '../errors/AppError';
+
 import User from '../models/Users';
 // Import the config file to get the temp filepath
 import uploadConfig from '../config/upload';
@@ -19,7 +21,7 @@ class UpdateUserAvatarService {
     const user = await usersRepository.findOne(user_id);
     // Check if the user is logged in and exists
     if (!user) {
-      throw new Error('Only authenticated users can change avatar.');
+      throw new AppError('Only authenticated users can change avatar.', 401);
     }
     // Check if the the user already have an avatar and delete it
     if (user.avatar) {
