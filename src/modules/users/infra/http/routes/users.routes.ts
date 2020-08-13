@@ -13,12 +13,12 @@ import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
 
-const usersRepository = new UsersRepository();
-
 const upload = multer(uploadConfig);
 
 usersRouter.post('/', async (request, response) => {
   const { name, email, password } = request.body;
+
+  const usersRepository = new UsersRepository();
 
   const createUser = new CreateUserService(usersRepository);
 

@@ -6,10 +6,10 @@ import AuthenticateUserService from '@modules/users/services/AuthenticateUserSer
 
 const sessionsRouter = Router();
 
-const usersRepository = new UsersRepository();
-
 sessionsRouter.post('/', async (request, response) => {
   const { email, password } = request.body;
+
+  const usersRepository = new UsersRepository();
 
   const authenticateUserService = new AuthenticateUserService(usersRepository);
 
