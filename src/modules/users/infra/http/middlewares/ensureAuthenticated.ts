@@ -5,7 +5,7 @@ import authConfig from '@config/auth';
 
 import AppError from '@shared/errors/AppError';
 
-interface TokenPayload {
+interface ITokenPayload {
   iat: number;
   exp: number;
   sub: string;
@@ -32,7 +32,7 @@ export default function ensureAuthenticated(
     const decoded = verify(token, authConfig.jwt.secret);
     // Get the sub (user id) from the payload
     // Needed to use as to force the TS to type as TokenPayLoad
-    const { sub } = decoded as TokenPayload;
+    const { sub } = decoded as ITokenPayload;
     // Add the user id information to the request
     request.user = {
       id: sub,
