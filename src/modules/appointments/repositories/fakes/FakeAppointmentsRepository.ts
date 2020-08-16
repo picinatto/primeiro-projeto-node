@@ -3,7 +3,7 @@ import { uuid } from 'uuidv4';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepositories';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 
-import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
+import Appointment from '../../infra/typeorm/entities/Appointment';
 
 class AppointmentsRepository implements IAppointmentsRepository {
   private appointments: Appointment[] = [];
