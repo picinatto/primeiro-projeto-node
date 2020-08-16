@@ -18,4 +18,4 @@ describe('CreateAppointment', () => {
   // it('should not be able to create two appointments on the same time', () => {
   //   expect(1+2).toBe(3);
   // })
-})
+});
