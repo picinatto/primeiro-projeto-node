@@ -1,12 +1,21 @@
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import AuthenticaUserService from './AuthenticateUserService';
 import CreateUserService from './CreateUserService';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
 describe('AuthenticateUser', () => {
   it('should be able to authenticate the user', async () => {
     const fakeUsersRepository = new FakeUsersRepository();
-    const authenticateUser = new AuthenticaUserService(fakeUsersRepository);
-    const createUser = new CreateUserService(fakeUsersRepository);
+    const fakeHashProvider = new FakeHashProvider();
+
+    const authenticateUser = new AuthenticaUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
+    const createUser = new CreateUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
 
     await createUser.execute({
       name: 'John Doe',
