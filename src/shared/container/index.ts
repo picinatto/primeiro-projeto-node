@@ -3,6 +3,9 @@ import { container } from 'tsyringe';
 // Import the hash provider dependency injection container
 import '@modules/users/providers';
 
+// Import the Providers from the container
+import './providers';
+
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepositories';
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
 
