@@ -39,7 +39,9 @@ describe('SendForgotPasswordEmail', () => {
     );
 
     await expect(
-      sendForgotPasswordEmail.execute({ email: 'johndoe@example.com' }),
+      sendForgotPasswordEmail.execute({
+        email: 'johndoe@example.com',
+      }),
     ).rejects.toBeInstanceOf(AppError);
   });
 });
