@@ -1,5 +1,3 @@
-// import AppError from '@shared/errors/AppError';
-
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeUsersTokensRepository from '@modules/users/repositories/fakes/FakeUsersTokensRepository';
 
@@ -7,6 +5,7 @@ import AppError from '@shared/errors/AppError';
 import ResetPasswordService from './ResetPasswordService';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
+// Created variables to make easier to instatiate each variable
 let fakeUsersRepository: FakeUsersRepository;
 let fakeUsersTokensRepository: FakeUsersTokensRepository;
 let resetPasswordService: ResetPasswordService;
