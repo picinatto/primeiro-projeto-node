@@ -1,25 +1,27 @@
 // import AppError from '@shared/errors/AppError';
 
-// TODO: PAROU EM 5 MINUTPS
-
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeUsersTokensRepository from '@modules/users/repositories/fakes/FakeUsersTokensRepository';
 
+import AppError from '@shared/errors/AppError';
 import ResetPasswordService from './ResetPasswordService';
-import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeUsersTokensRepository: FakeUsersTokensRepository;
 let resetPasswordService: ResetPasswordService;
+let fakeHashProvider: FakeHashProvider;
 
-describe('SendForgotPasswordEmail', () => {
+describe('ResetPasswordService', () => {
   // Instantiate each repo and service before each it
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeUsersTokensRepository = new FakeUsersTokensRepository();
+    fakeHashProvider = new FakeHashProvider();
     resetPasswordService = new ResetPasswordService(
       fakeUsersRepository,
       fakeUsersTokensRepository,
+      fakeHashProvider,
     );
   });
 
@@ -32,6 +34,8 @@ describe('SendForgotPasswordEmail', () => {
 
     const { token } = await fakeUsersTokensRepository.generate(user.id);
 
+    const generateHash = jest.spyOn(fakeHashProvider, 'generateHash');
+
     await resetPasswordService.execute({
       password: '123123',
       token,
@@ -39,6 +43,31 @@ describe('SendForgotPasswordEmail', () => {
 
     const updateUser = await fakeUsersRepository.findById(user.id);
 
+    expect(generateHash).toHaveBeenCalledWith('123123');
     expect(updateUser?.password).toBe('123123');
   });
+
+  it('should not be able to reset the password with non-existing token', async () => {
+    await expect(
+      resetPasswordService.execute({
+        token: 'non-existing-token',
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to reset the password with non-existing user', async () => {
+    const { token } = await fakeUsersTokensRepository.generate(
+      'non-existing-user',
+    );
+
+    await expect(
+      resetPasswordService.execute({
+        token,
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to reset password if elapsed more than 2 hours', async () => {});
 });
