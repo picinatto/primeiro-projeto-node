@@ -69,5 +69,26 @@ describe('ResetPasswordService', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to reset password if elapsed more than 2 hours', async () => {});
+  it('should not be able to reset password if elapsed more than 2 hours', async () => {
+    const user = await fakeUsersRepository.create({
+      name: 'John Doe',
+      email: 'johndoes@example.com',
+      password: '123456',
+    });
+
+    const { token } = await fakeUsersTokensRepository.generate(user.id);
+
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
+      const customDate = new Date();
+
+      return customDate.setHours(customDate.getHours() + 3);
+    });
+
+    await expect(
+      resetPasswordService.execute({
+        password: '1231234',
+        token,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
