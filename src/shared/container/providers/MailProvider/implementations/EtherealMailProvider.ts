@@ -1,7 +1,7 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import IMailProvider from '../models/IMailProvider';
 
-// TODO: Parado 10:50  emails em desenvolvimento
+// TODO: Parado 14:41  emails em desenvolvimento
 
 interface IMessage {
   to: string;
