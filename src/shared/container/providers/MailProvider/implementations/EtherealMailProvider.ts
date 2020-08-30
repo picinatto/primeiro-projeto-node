@@ -1,5 +1,6 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import IMailProvider from '../models/IMailProvider';
+import ISendMailDTO from '../dtos/ISendMailDTO';
 
 // TODO: Parado 14:41  emails em desenvolvimento
 
@@ -27,15 +28,26 @@ export default class EtherealMailProvider implements IMailProvider {
     });
   }
 
-  public async sendMail(to: string, body: string): Promise<void> {
+  public async sendMail({
+    to,
+    subject,
+    from,
+    templateData,
+  }: ISendMailDTO): Promise<void> {
     const message = await this.client.sendMail({
-      from: 'Equipe GoBarber <equipe@gobarber.com.br>',
-      to,
-      subject: 'Recuperação de senha',
-      text: body,
+      from: {
+        name: from?.name || 'Equipe GoBarber',
+        address: from?.email || 'equipe@gobarber.com.br',
+      },
+      to: {
+        name: to.name,
+        address: to.email,
+      },
+      subject,
+      text: templateData,
     });
 
-    console.log('Message sent: s%', message.messageId);
-    console.log('Message url: s%', nodemailer.getTestMessageUrl(message));
+    console.log('Message sent: ', message.messageId);
+    console.log('Message url: ', nodemailer.getTestMessageUrl(message));
   }
 }
