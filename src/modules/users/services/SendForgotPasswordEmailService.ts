@@ -7,8 +7,6 @@ import IUsersTokensRepository from '../repositories/IUsersTokensRepository';
 
 // import User from '@modules/users/infra/typeorm/entities/Users';
 
-// TODO: Parei 20:00 Template de email
-
 interface IRequest {
   email: string;
 }

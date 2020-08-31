@@ -1,18 +1,22 @@
 import nodemailer, { Transporter } from 'nodemailer';
+import { inject, injectable } from 'tsyringe';
 import IMailProvider from '../models/IMailProvider';
 import ISendMailDTO from '../dtos/ISendMailDTO';
-
-// TODO: Parado 14:41  emails em desenvolvimento
+import IMailTemplateProvider from '../../MailTemplateProvider/models/IMailTemplateProvider';
 
 interface IMessage {
   to: string;
   body: string;
 }
 
+@injectable()
 export default class EtherealMailProvider implements IMailProvider {
   private client: Transporter;
 
-  constructor() {
+  constructor(
+    @inject('MailTemplateProvider')
+    private mailTemplateProvider: IMailTemplateProvider,
+  ) {
     nodemailer.createTestAccount().then(account => {
       const transporter = nodemailer.createTransport({
         host: account.smtp.host,
@@ -44,7 +48,7 @@ export default class EtherealMailProvider implements IMailProvider {
         address: to.email,
       },
       subject,
-      text: 'Teste',
+      html: await this.mailTemplateProvider.parse(templateData),
     });
 
     console.log('Message sent: ', message.messageId);
