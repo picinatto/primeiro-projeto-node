@@ -2,8 +2,6 @@ import { injectable, inject } from 'tsyringe';
 
 import User from '@modules/users/infra/typeorm/entities/Users';
 
-// TODO: Parado em 08:35 -> Atualização do perfil
-
 import AppError from '@shared/errors/AppError';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -31,6 +29,13 @@ class UpdateProfileService {
 
     if (!user) {
       throw new AppError('User not found');
+    }
+
+    // Check if the user is trying to update the email to an existing one
+    const userWithUpdatedEmail = await this.usersRepository.findByEmail(email);
+    // Check if the same email is being set to a differente user (current)
+    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id) {
+      throw new AppError('Email already in user');
     }
 
     user.name = name;
