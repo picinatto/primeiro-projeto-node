@@ -1,15 +1,15 @@
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../repositories/IUsersRepository';
-import User from '../infra/typeorm/entities/Users';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import User from '@modules/users/infra/typeorm/entities/Users';
 
 interface IRequest {
   user_id: string;
 }
 
 @injectable()
-class ShowProfileService {
+class ListProvidersService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -28,4 +28,4 @@ class ShowProfileService {
   }
 }
 
-export default ShowProfileService;
+export default ListProvidersService;
