@@ -45,6 +45,12 @@ class ListProviderMonthAvailabilityService {
       const appointmentsInDay = appointments.filter(appointment => {
         return getDate(appointment.date) === day;
       });
+
+      // Check if there is at least one time available (less than 10 appointments)
+      return {
+        day,
+        available: appointmentsInDay.length < 10,
+      };
     });
 
     return availability;
