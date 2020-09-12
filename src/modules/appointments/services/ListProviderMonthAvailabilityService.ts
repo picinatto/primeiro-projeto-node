@@ -1,13 +1,9 @@
 import { injectable, inject } from 'tsyringe';
 
-import AppError from '@shared/errors/AppError';
-
-import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-
 import IAppointmentsRepository from '../repositories/IAppointmentsRepositories';
 
 interface IRequest {
-  user_id: string;
+  provider_id: string;
   month: number;
   year: number;
 }
@@ -24,8 +20,20 @@ class ListProviderMonthAvailabilityService {
     private appointmentsRepository: IAppointmentsRepository,
   ) {}
 
-  public async execute({ user_id, year, month }: IRequest): Promise<IResponse> {
-    const appointments = this.appointmentsRepository.findByDate;
+  public async execute({
+    provider_id,
+    year,
+    month,
+  }: IRequest): Promise<IResponse> {
+    const appointments = await this.appointmentsRepository.findAllInMonthFromProvider(
+      {
+        provider_id,
+        year,
+        month,
+      },
+    );
+
+    console.log(appointments);
 
     return [
       {
