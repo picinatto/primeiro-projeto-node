@@ -1,4 +1,3 @@
-import { startOfHour } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
@@ -20,9 +19,14 @@ type IResponse = Array<{
 
 @injectable()
 class ListProviderMonthAvailabilityService {
-  constructor() {}
+  constructor(
+    @inject('AppointmentsRepository')
+    private appointmentsRepository: IAppointmentsRepository,
+  ) {}
 
   public async execute({ user_id, year, month }: IRequest): Promise<IResponse> {
+    const appointments = this.appointmentsRepository.findByDate;
+
     return [
       {
         day: 1,
